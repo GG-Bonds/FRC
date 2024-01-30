@@ -1,0 +1,253 @@
+%%%% ijcai24.tex
+
+\typeout{IJCAI--24 Instructions for Authors}
+
+% These are the instructions for authors for IJCAI-24.
+
+\documentclass{article}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+
+% The file ijcai24.sty is a copy from ijcai22.sty
+% The file ijcai22.sty is NOT the same as previous years'
+\usepackage{ijcai24}
+
+% Use the postscript times font!
+\usepackage{times}
+\usepackage{soul}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[small]{caption}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[switch]{lineno}
+\usepackage{amssymb}  % 提供了额外的数学符号
+\usepackage{amsfonts} % 提供了额外的数学字体，如 \mathbb
+
+% \usepackage[table]{xcolor} % For row colors
+\usepackage{graphicx} % For resizebox
+
+% Comment out this line in the camera-ready submission
+\linenumbers
+
+\urlstyle{same}
+
+% the following package is optional:
+%\usepackage{latexsym}
+
+% See https://www.overleaf.com/learn/latex/theorems_and_proofs
+% for a nice explanation of how to define new theorems, but keep
+% in mind that the amsthm package is already included in this
+% template and that you must *not* alter the styling.
+\newtheorem{example}{Example}
+\newtheorem{theorem}{Theorem}
+
+% Following comment is from ijcai97-submit.tex:
+% The preparation of these files was supported by Schlumberger Palo Alto
+% Research, AT\&T Bell Laboratories, and Morgan Kaufmann Publishers.
+% Shirley Jowell, of Morgan Kaufmann Publishers, and Peter F.
+% Patel-Schneider, of AT\&T Bell Laboratories collaborated on their
+% preparation.
+
+% These instructions can be modified and used in other conferences as long
+% as credit to the authors and supporting agencies is retained, this notice
+% is not changed, and further modification or reuse is not restricted.
+% Neither Shirley Jowell nor Peter F. Patel-Schneider can be listed as
+% contacts for providing assistance without their prior permission.
+
+% To use for other conferences, change references to files and the
+% conference appropriate and use other authors, contacts, publishers, and
+% organizations.
+% Also change the deadline and address for returning papers and the length and
+% page charge instructions.
+% Put where the files are available in the appropriate places.
+
+
+% PDF Info Is REQUIRED.
+
+% Please leave this \pdfinfo block untouched both for the submission and
+% Camera Ready Copy. Do not include Title and Author information in the pdfinfo section
+\pdfinfo{
+/TemplateVersion (IJCAI.2024.0)
+}
+
+\title{IJCAI--24 Formatting Instructions}
+
+
+% Single author syntax
+\author{
+    Author Name
+    \affiliations
+    Affiliation
+    \emails
+    email@example.com
+}
+
+% Multiple author syntax (remove the single-author syntax above and the \iffalse ... \fi here)
+\iffalse
+\author{
+First Author$^1$
+\and
+Second Author$^2$\and
+Third Author$^{2,3}$\And
+Fourth Author$^4$\\
+\affiliations
+$^1$First Affiliation\\
+$^2$Second Affiliation\\
+$^3$Third Affiliation\\
+$^4$Fourth Affiliation\\
+\emails
+\{first, second\}@example.com,
+third@other.example.com,
+fourth@example.com
+}
+\fi
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    The {\it IJCAI--24 Proceedings} will be printed from electronic
+    manuscripts submitted by the authors. The electronic manuscript will
+    also be included in the online version of the proceedings. This paper
+    provides the style instructions. Hellos
+\end{abstract}
+
+\section{Introduction}
+
+Recent advancements in deep learning have significantly enhanced 3D object detection in autonomous driving. Previous research predominantly concentrated on the fusion of LiDAR point clouds and camera imagery, achieving high detection accuracy thanks to the rich semantic information from cameras and the precise geometric data from LiDAR. However, in practical applications, cost-effective and robust 3D object detection solutions that perform well across various environments are crucial for the mass production and safe operation of autonomous vehicles. The sensing capabilities of LiDAR and cameras, however, are limited under adverse weather conditions, such as heavy fog or rain, which are low-visibility environments. Additionally, the high cost of LiDAR point clouds highlights the limitations of LiDAR and camera fusion solutions.
+
+The focus in both industry and academia has shifted towards integrating radar with camera data, seeking to capitalize on the complementary advantages of these two sensor types for more robust and adaptable perception systems. Yet, traditional LiDAR and camera fusion methods are not ideally suited for radar integration. Radar data, with its inherent sparsity, ambiguous measurements, and noise, presents distinct challenges for fusion algorithms.
+
+In this context, radar sensors have garnered attention due to their low cost, all-weather functionality, and the ability to provide long-distance and precise speed estimations. Currently, the focus in both industry and academia has shifted towards integrating radar with camera data, seeking to capitalize on the complementary advantages of these two sensor types for more robust and adaptable perception systems. Yet, existing LiDAR and camera fusion methods are not well-suited for radar and camera fusion. In contrast to LiDAR, radar data, with its inherent sparsity, ambiguous measurements, and noise, presents distinct challenges for radar and camera fusion algorithms.
+
+Traditionally, radar and camera fusion occurs at the detection level, generating 3D bounding box proposals from camera features and refining them with radar features. However, this method does not fully utilize radar features before generating 3D candidate boxes and heavily relies on manually set parameters, such as fixed 3D bounding boxes as initial parameters, limiting flexibility and adaptability to sensor failures. Recent research has attempted feature-level fusion using an LSS module to transform camera features to a bird's-eye view, integrating them with radar features. This approach, however, requires the aid of LiDAR point clouds during training and the substantial presence of noisy radar data before the fusion process, leading to suboptimal fusion features. Although some studies filter out noise radar before fusion, they either fail to incorporate the rich semantic image information before filtering or use image foregrounds for filtering without distinguishing radars at different depths. 
+
+To overcome these challenges, we propose an innovative and robust BEV (Bird's Eye View) fusion feature encoding method, named Foreground Radar Camera Net. Our method employs a lightweight module to filter radar noise under the guidance of image semantic information, then enhances the interaction of multimodal features through a cross-attention mechanism, addressing feature misalignment and reducing reliance on LiDAR, thereby achieving precise and robust 3D detection even in scenarios where traditional systems might falter.
+
+Specifically, we initially encode radar features using PointPillars. Considering the negative impact of noisy radar on feature fusion, in our Foreground Radar-Feature Selection Module, we utilize RadarProjectImg Cross-attention to project radar features into the image space and combine them with the rich semantic information of cameras to eliminate noise radar. This process ensures the preserved radar features are more accurate and reliable, laying a solid foundation for subsequent feature fusion.
+
+In the feature fusion phase, we predefined a series of FusionBEV queries. In our MULTI-MODAL Fusion Encoder, these queries sample features only at the locations of foreground radar points and effective camera areas. Through cross-attention, we uniformly encode multimodal features into the BEV space, achieving effective cross-modal interaction. This strategy not only improves the representational power of features but also reduces computational complexity. Importantly, our method does not rely on LiDAR for auxiliary training and maintains good performance even in the event of sensor failures, providing robustness and flexibility for practical applications.
+
+In the decoding phase, we further utilize the information of foreground radar features to enhance detection accuracy and stability. Since these features are near the targets of interest, we encode their location information into prior queries and concatenate them with predefined queries to form object queries. This strategy, by introducing prior knowledge, enhances network stability and convergence speed, leading to more precise and robust 3D detection outcomes.
+
+Our main contributions are as follows:
+
+1. The core contribution of this paper is the introduction of a novel and efficient 3D object detection method – Foreground Radar Camera Net. Its innovation lies in its unique BEV-based fusion feature encoding strategy, effectively combining the complementary advantages of radar and cameras.
+
+
+2. By designing the Foreground Radar Feature Selection Module and MULTI-MODAL Fusion Encoder, we have enhanced the quality of fusion features and reduced computational complexity. Importantly, our method does not rely on external auxiliary devices and demonstrates stable and excellent detection performance in various environments. These innovations provide new perspectives and solutions for the perception systems of autonomous driving, particularly making significant strides in robustness in adverse weather and complex scenarios.
+
+
+\section{Related Work}
+
+\subsection{Camera Based 3D Object Detection}
+
+Recent years have seen camera-based 3D object detection emerge as a hot topic in autonomous driving research. Initial methods focused on monocular detection on the image plane, but for surround-view cameras, this necessitated complex post-processing for merging results from different cameras.
+
+The latest trend is 3D detection under BEV (Bird's Eye View), unifying multi-view camera results in one space. This approach is categorized into bottom-up methods like lss, bevdet, and bevdepth, which transform image features into BEV features by predicting depth, then detect 3D objects. Conversely, top-down methods involve pre-defined 3D space queries projected onto images for sampling. For instance, DETR3D uses learnable 3D queries for end-to-end detection, eliminating the need for NMS post-processing. BEVFormer utilizes grid-like BEV queries for image sampling to generate BEV features. However, camera sensitivity to environmental factors, like lighting, and lack of distance information limit the precision and robustness of these detection algorithms.
+
+\subsection{Multi-modal 3D Object Detection}
+To address these drawbacks, multi-modal 3D detection, particularly fusing LiDAR and camera data, has gained traction. For example, FUTR3D employs 3D reference points as queries, sampling features from projected planes. BEVFusion uses a lift-splatshoot operation to project image features onto BEV space, combined with LiDAR features. 
+
+While radar data's similarities to LiDAR offer potential, its noisier and sparser nature, along with vague height information, present unique challenges. Nevertheless, radar's cost-effectiveness and functionality in various conditions make it an appealing option for enhancing camera robustness and depth data. Recent efforts like BEVFusion and CenterFusion merge radar and camera features, but overlook sensor misalignment. CRN, using radar depth to assist camera perspective to BEV feature transformation and integrating them with radar BEV features via a transformer structure, shows promise despite requiring LiDAR for depth supervision. To mitigate radar noise, some studies, like CramNet and HVDetFusion, only process foreground radar, resulting in more significant outcomes. However, these methods do not integrate features from the other modality before extracting foreground information, leading to suboptimal extraction and complexity.
+
+
+
+\section{Methodology}
+In this section, we present FRCN, a robust and accurate framework for 3D object detection via radar point clouds and multi-view camera image inputs. The general network structure of FRCN, as shown in the figure, is divided into four parts: 1) Multi-Modal Feature Extractors: This module uses separate encoders to extract sensor features from radar point clouds and surround-view camera images. 2) Foreground Radar-Feature Selection Module: This module projects radar data onto images, combining it with the rich semantic information from the images to generate semantically guided radar features, thereby selecting prominent foreground radar features.3) Multi-Modal Fusion Encoder: A set of learnable FusionBev queries are predefined. Using cross-attention, these queries are projected onto the foreground radar features and 2D image features for sampling, resulting in fused BEV features. This process does not require pre-converting image features into BEV space as in CRN. 4) 3D Detection Head: The fused BEV features are input into a 3D Detection Head, similar to a deformable detr head, to obtain 3D detection results. To stabilize training and speed up convergence, prior information from the foreground radar features is encoded into prior queries, which are concatenated with predefined queries and input as object queries to the 3D Detection Head.
+
+\subsection{MULTI-MODAL Feature Extractors}
+\noindent \textbf{Camera Feature Extractor.} Following the approach of BEVFormer, our Camera Feature Extractor, denoted as $ \phi_{c} (\cdot ) $ , utilizes ResNet101 to extract features from surround-view camera images. To generate multi-scale features, we then input these into an FPN (Feature Pyramid Network), ultimately obtaining an N-view 2D image representation  $ F^{i}_{c},i\in [1,2,\cdot \cdot \cdot ,N] $ .
+
+\noindent \textbf{Radar Feature Extractor.} Our radar data consists of 3D coordinates (x, y, z), RCS (Radar Cross Section), and Doppler velocity (vx, vy). Although radar and lidar point clouds have similar data representations, radar does not provide reliable height information. Therefore, we adopt a cylindrical form and code the radar data using PointNet and sparse 2D convolution $\phi_{r} (\cdot )$ , forming radar features $F^{}_{r}\in \mathbb{R}^{C\times X\times Y} $, where 'C' is the dimension of radar features and (x, y) are the BEV resolution.
+
+
+\subsection{Foreground Radar-Feature Selection Module}
+Despite radar's capability to measure distances beyond 100 meters and record the velocity and location of objects, it also captures information from non-target objects, leading to 'false positive radar' issues. Addressing these false positives is crucial for improving data fusion accuracy within models. Existing methods like MVFusion, which use 2D image foreground segmentation to filter radar data, struggle to distinguish radar signals at different depths in the same image location. Similarly, CramNet, while performing foreground segmentation of radar in BEV (Bird's Eye View) space, does not fully utilize the rich semantic information from images. To overcome these limitations, we propose an innovative, lightweight Foreground Radar-Feature Selection Module, comprising two key components: the Semantic-guided Radar Encoder and the Foreground Radar-Feature Mask Module. This module not only utilizes image semantics to enhance radar features but also achieves high-precision foreground segmentation in BEV space, emphasizing a high recall rate, thus effectively reducing the negative impact of false positive radar on fusion.
+
+
+\noindent \textbf{Semantic-guided Radar Encoder.} Although radar features contain information about an object's velocity and location, it lacks semantic information, posing challenges in directly predicting radar foreground features. To address this, we enrich radar features with semantic information from images, facilitating enhanced image-guided radar interpretation. Given radar's inherent offset and sparsity, with many areas left blank, we apply a 3x3 bias-free convolution layer to diffuse radar features. Our innovative RadarProjectImg Cross-attention (RCA) process projects valid radar feature pixels onto corresponding image features. Specifically, considering radar's uncertain height information, we lift each valid radar point on the BEV plane at coordinates (x, y) to various heights \(Z_i\), subsequently projecting them onto the \(i\)-th image at projection points \((u_i, v_i)\). The points \(P_i(x, y, z_j)\) are then sampled using a deformable attention function from the image feature \(F^c_i\). The entire process of RadarProjectImg Cross-attention (RCA) is represented as follows:
+
+\[RCA(R_{x, y}, F_c) = \sum^{N_c}_{i=1} \sum^{N_{ref}}_{j=1} DeformAttn(R_{x, y}, P_i(x, y, z_j), F^i_c)\]
+
+Given that valid radar features \(R_{(x, y)}\) are sparse, and we use only one RadarProjectImg Cross-attention layer, the entire module is exceptionally lightweight.
+
+\noindent \textbf{Foreground Radar-Feature Mask Module.} we employ a 1x1 convolution layer coupled with a sigmoid activation to classify the Semantic-guided Radar features identified in Section 3.1. Acknowledging that radar point clouds predominantly manifest near physical objects, we expand the 3D bounding boxes derived from ground truth labels to 1.5 times their original dimensions, subsequently projecting them onto the Bird's Eye View (BEV) plane as binary classification ground truth \( M_{gt} \). This entire process is trained through a weighted cross-entropy loss function. To ensure a superior recall rate, we opt for a lower foreground threshold \( \gamma \). Consequently, radar feature pixels with a foreground score \( s_{i} \) exceeding the threshold \( \gamma \) are classified as foreground; the reverse applies for lower scores. Ultimately, this yields distinct sets of foreground radar features \( F^{f}_{r} \in \mathbb{R}^{H \times W \times C} \) and background radar features \( F^{b}_{r} \in \mathbb{R}^{H \times W \times C} \).
+
+\subsection{MULTI-MODAL Fusion Encoder}
+While traditional fusion strategies, such as channel concatenation or summation, have failed to effectively address the issue of spatial misalignment between modalities, CRN has made strides in this area through cross attention. This method, however, relies on the generation of img-BEV features with lidar assistance via LSS, which can introduce inaccuracies in modal alignment due to the disparity between the sparsity of these features and radar features. To address this, we designed the MULTI-MODAL Fusion Encoder based on the BEVFormer architecture. Our approach is distinctive in that it directly fuses radar and camera features, eliminating the need for lidar input. This design choice simplifies the system architecture and reduces dependencies on additional sensors. As shown in Figure 4.2, the MULTI-MODAL Fusion Encoder consists of 3 layers, each incorporating Temporal Self-Attention and Multi-Modal cross-attention. Following the BEVFormer model, in each encoder layer, we initially use FusionBEV queries Q to extract temporal information from previous BEV features Bt-1 via temporal self-attention. Then, we use FusionBEV queries Q to gather multi-modal information via Multi-Modal cross-attention. The output FusionBEV queries of each layer are updated through a feedforward network and serve as the input for the subsequent layer. This layered approach offers a streamlined and sensor-independent solution, valuable in contexts where lidar data is unavailable or impractical. Next, we will focus on introducing FusionBEV Queries and Multi-Modal cross-attention.
+
+\noindent \textbf{FusionBEV Queries.} We defined a set of learnable parameters $Q\in \mathbb{R}^{C\times X\times Y} $ known as FusionBEV queries. Here, HxW represents the BEV grid points centered around the ego-vehicle, and C is the channel number of FusionBEV queries. These FusionBEV queries are shared across all modalities, directly sampling img features $F_{c}$ and Radar features $F^{f}_{r}$.
+
+\noindent \textbf{Multi-Modal cross-attention}. Our multi-modal cross-attention layer is implemented based on deformable attention DAttn. As described in Section 3.2, we have already predicted the positions of non-target objects $\left( x_{b},y_{b}\right)  $ on the BEV plane. To optimize computational efficiency, FusionBEV queries at these positions are excluded from computation. Instead, we focus on FusionBEV queries at potential target object positions$\left( x_{p},y_{p}\right)  $. These queries are projected onto each modality feature for sampling. This process is represented by the following formula:
+$$\begin{gathered}MCA(Q_{x_{p},y_{p}},F_{c},F^{f}_{r})=DefAttn(Q_{x_{p},y_{p}},P_{2D}(x_{p},y_{p}),F^{f}_{r})\\ \  \   +\frac{1}{N_{c}} \sum^{N_{c}}_{i=1} \sum^{N_{ref}}_{j=1} DefAttn(Q_{x_{p},y_{p}},P^{i}_{3d}(x_{p},y_{p},z_{j}),F^{i}_{c}))\end{gathered} $$
+
+Here, $P_{2d}(x_{p},y_{p})$denotes the projected point positions on the BEV plane. As FusionBEV queries lack height information, we employed a method similar to that in Section 3.2, listing $\left( x_{p},y_{p}\right)  $at different heights $z_{j}$ to obtain 3D projection points $(x_{p},y_{p},z_{j})$, where $p^{i}_{3d}(x_{p},y_{p},z_{j})$ are the corresponding positions of these 3D projection points on image $F_{i}$.
+
+
+
+\subsection{3D Detection Head}
+Our 3D detection head adopts the decoder from BEVFormer, similar to the decoder in Deformable DETR, treating object detection as a set prediction problem and thus eliminating the need for NMS post-processing. It is well known that DETR-style pre-defined queries struggle to converge due to a lack of prior knowledge. Inspired by two-stage methods, we encode the prior information of foreground radar features close to the region of interest directly into the decoder. To minimize the interference of low-quality foreground radar, a higher selection threshold r is adopted, ensuring only the most salient radar signals are considered.  Although we only have the positional information $\left( X,Y\right)$ of foreground radar features in the BEV plane, we can predict the approximate height $Z_{pred}$ using the FusionBEV features $F_{b}$ at the specific location $\left( X,Y\right) $ , expressed as:
+$$Z^{}_{pred}=sigmoid(MLP\  (F_{b}(X,Y))\  )$$
+After obtaining the prior positional information $P(X_{},Y_{},Z^{}_{pred})$ , we encode it into prior queries as follows:
+$$Q_{sem}=SemEncoder\left( F_{b}(X,Y),S\right)  $$
+$$Q_{pos}=PosEencoder\left( P\right)  $$
+$$Q_{prior}=Q_{sem}+Q_{pos}$$
+
+where S is the confidence score of the foreground radar, and $Q_{prior}$ represent the prior queries. $Q_{pos}$ and $Q_{sem}$ respectively represent the positional and semantic encoders,  with $Q_{pos}\left( \cdot \right) $ comprising a sinusoidal transformation and an MLP, while $Q_{sem}\left( \cdot \right) $ is another MLP. 
+Finally, the encoded prior queries and pre-defined queries are concatenated and fed into the decoder. This design enhances the detection precision and the convergence speed.
+
+
+\input{sota_table}
+
+
+
+
+Citations within the text should include the author's last name and
+the year of publication, for example~\cite{gottlob:nonmon}.  Append
+lowercase letters to the year in cases of ambiguity.  Treat multiple
+authors as in the following examples:~\cite{abelson-et-al:scheme}
+or~\cite{bgf:Lixto} (for more than two authors) and
+\cite{brachman-schmolze:kl-one} (for two authors).  If the author
+portion of a citation is obvious, omit it, e.g.,
+Nebel~\shortcite{nebel:jair-2000}.  Collapse multiple citations as
+follows:~\cite{gls:hypertrees,levesque:functional-foundations}.
+\nocite{abelson-et-al:scheme}
+\nocite{bgf:Lixto}
+\nocite{brachman-schmolze:kl-one}
+\nocite{gottlob:nonmon}
+\nocite{gls:hypertrees}
+\nocite{levesque:functional-foundations}
+\nocite{levesque:belief}
+\nocite{nebel:jair-2000}
+
+
+
+
+
+\section*{Acknowledgments}
+
+The preparation of these instructions and the \LaTeX{} and Bib\TeX{}
+files that implement them was supported by Schlumberger Palo Alto
+Research, AT\&T Bell Laboratories, and Morgan Kaufmann Publishers.
+Preparation of the Microsoft Word file was supported by IJCAI.  An
+early version of this document was created by Shirley Jowell and Peter
+F. Patel-Schneider.  It was subsequently modified by Jennifer
+Ballentine, Thomas Dean, Bernhard Nebel, Daniel Pagenstecher,
+Kurt Steinkraus, Toby Walsh, Carles Sierra, Marc Pujol-Gonzalez,
+Francisco Cruz-Mencia and Edith Elkind.
+
+
+%% The file named.bst is a bibliography style file for BibTeX 0.99c
+\bibliographystyle{named}
+\bibliography{ijcai24}
+
+\end{document}
+

@@ -1,0 +1,48 @@
+% % \begin{table}[t]
+% % \centering
+% % \label{tab:example_table}
+% % \begin{tabular}{l|c|c|}
+% % \toprule
+% % Column 1 & Column 2 & Column 3 \\
+% % \midrule
+% % Item 1 & Item 2 & Item 3 \\
+% % Item 4 & Item 5 & Item 6 \\
+% % \bottomrule
+% % \end{tabular}
+% % \caption{3D Object Detection on nuScenes val set.}  % 标题
+
+% % \end{table}
+
+% \usepackage[table]{xcolor} % For row colors
+% \usepackage{graphicx} % For resizebox
+% \definecolor{Gray}{gray}{0.85}
+\begin{table*}[!htb]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{l|c|c|c|S|S|S|SSSSS}
+\toprule
+Method & Input & Backbone & {Image Size} & {Setting} & {NDS$\uparrow$} & {mAP$\uparrow$} & {mATE$\downarrow$} & {mASE$\downarrow$} & {mAOE$\downarrow$} & {mAVE$\downarrow$} & {mAAE$\downarrow$} \\
+\midrule
+FCOS3D        & C   & R101 & 900 $\times$ 1600 & S & 0.415 & 0.343 & 0.725 & 0.263 & 0.422 & 1.292 & 0.153 \\
+DETR3D        & C   & R101 & 900 $\times$ 1600 & S & 0.425 & 0.346 & 0.773 & 0.268 & 0.383 & 0.842 & 0.216 \\
+PETR${}^{\ast }$          & C   & R101 & 900 $\times$ 1600 & S & 0.442 & 0.370 & 0.711 & 0.267 & 0.865 & 0.865 & 0.201 \\
+\rowcolor{Gray}
+BEVFormer-S   & C   & R101 & 900 $\times$ 1600 & S & 0.448 & 0.375 & 0.725 & 0.272 & 0.391 & 0.802 & 0.200 \\
+\rowcolor{Gray}
+BEVFormer     & C   & R101 & 900 $\times$ 1600 & M & 0.517 & 0.416 & 0.673 & 0.274 & 0.372 & 0.394 & 0.198 \\
+\bottomrule
+
+CenterFusion${}^{\ast }$  & C+R & DLA34& 448 $\times$ 800  & S & 0.453  & 0.332  & 0.649 & 0.263 & 0.535 & 0.540 & 0.142 \\
+CRAFT${}^{\ast }$         & C+R & DLA34& 448 $\times$ 800  & S & 0.517  & 0.411  & 0.494 & 0.276 & 0.454 & 0.486 & 0.176 \\
+MVFusion${}^{\ast }$      & C+R & R101 & 900 $\times$ 1600 & S & 0.455  & 0.380  & 0.675 & 0.258 & 0.372 & 0.833 & 0.196 \\
+RCBEV4d${}^{\ast }$         & C+R & Swin-T   & 256 $\times$ 704 & M & 0.497 & 0.381 & 0.526 & 0.272 & 0.445 & 0.465 & 0.185 \\
+CRN           & C+R & R101 & 512 $\times$ 1408 & M,L & 0.592  & 0.525  & 0.460 & 0.273 & 0.443 & 0.352 & 0.180 \\
+FRC-S           & C+R & R101 & 900 $\times$ 1600 & S & 0.575   & 0.559  & 0.559 & 0.275 & 0.385 & 0.267 & 0.181 \\
+FRC           & C+R & R101 & 900 $\times$ 1600 & M & 0.586  & 0.492  & 0.543 & 0.270 & 0.340 & 0.270 & 0.174 \\
+\bottomrule
+\end{tabular}
+}
+\caption{3D detection results on nuScenes val set. "C" indicates Camera, "C+R" indicates Camera and Radar. Setting “S”: only using single-frame information,
+“M”: using multi-frame information. “L”: using extra LiDAR data source as depth supervision. ${}^{\ast }$: trained with CBGS.}
+\end{table*}        
+
